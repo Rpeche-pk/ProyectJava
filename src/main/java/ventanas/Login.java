@@ -11,6 +11,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.sql.*;
 import clases.Conexion;
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 /**
  *
@@ -56,8 +57,8 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel_Logo = new javax.swing.JLabel();
         txt_password = new javax.swing.JPasswordField();
+        jLabel_Logo = new javax.swing.JLabel();
         txt_user = new javax.swing.JTextField();
         jButton_Acceder = new javax.swing.JButton();
         jLabel_Footer = new javax.swing.JLabel();
@@ -65,15 +66,14 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(jLabel_Logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 280, 230));
 
-        txt_password.setEditable(false);
         txt_password.setBackground(new java.awt.Color(153, 153, 255));
-        txt_password.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        txt_password.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         txt_password.setForeground(new java.awt.Color(255, 255, 255));
         txt_password.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_password.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 370, 210, -1));
+        getContentPane().add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 370, 210, -1));
+        getContentPane().add(jLabel_Logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 280, 230));
 
         txt_user.setBackground(new java.awt.Color(153, 153, 255));
         txt_user.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -107,7 +107,35 @@ public class Login extends javax.swing.JFrame {
         pass=txt_password.getText().trim();
         
         if (!user.equals("") && !pass.equals("")) {
-            
+            try {
+                Connection cn=Conexion.conectar();
+                PreparedStatement pst= cn.prepareStatement("Select tipo_nivel, estatus from usuarios where username='" + user + "' and password='" +pass+"'");
+                
+                ResultSet rs = pst.executeQuery();
+                if (rs.next()) {
+                    String tipo_nivel=rs.getString("tipo_nivel");
+                    String status= rs.getString("estatus");
+                    
+                    if (tipo_nivel.equalsIgnoreCase("Administrador") && status.equalsIgnoreCase("Activo")) {
+                       //permite destruir el jframe osea cerrar la interfaz actual
+                        dispose();
+                        new Administrador().setVisible(true);
+                    } else if(tipo_nivel.equalsIgnoreCase("Capturista") && status.equalsIgnoreCase("Activo")){
+                        dispose();
+                        new Capturista().setVisible(true);
+                    } else if(tipo_nivel.equalsIgnoreCase("Tecnico") && status.equalsIgnoreCase("Activo")){
+                        dispose();
+                        new Tecnico().setVisible(true);
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Error datos de acceso incorrectos");
+                    txt_password.setText("");
+                    txt_user.setText("");
+                }
+            } catch (HeadlessException | SQLException e) {
+                System.err.println("Error en el boton acceder " +e);
+                JOptionPane.showMessageDialog(null, "Error al iniciar contacte con el administrador");
+            }
         }else{
             JOptionPane.showMessageDialog(null, "Los campos estan en blancos");
         }
