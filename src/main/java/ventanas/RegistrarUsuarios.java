@@ -175,7 +175,7 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
         int permisos_cmb, validacion=0;
-        String nombre, email, telefono, username,pass,permisos_string;
+        String nombre, email, telefono, username,pass,permisos_string="";
         
         email=txt_email.getText().trim();
         username=txt_username.getText().trim();
@@ -220,10 +220,48 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
             
             if (rs.next()) {
                txt_username.setBackground(Color.red);
-                JOptionPane.showMessageDialog(null, "Nombre de usuario se encuentra registrado");
-                cn.close();
+               JOptionPane.showMessageDialog(null, "Nombre de usuario se encuentra registrado");
+               cn.close();
             }else{
-                
+               
+               cn.close();
+                if (validacion==0) {
+                    try {
+                        Connection cn2=Conexion.conectar();
+                        PreparedStatement pst2= cn2.prepareStatement("Insert into usuarios values (?,?,?,?,?,?,?,?,?)");
+                        pst2.setInt(1, 0);
+                        pst2.setString(2, nombre);
+                        pst2.setString(3, email);
+                        pst2.setString(4, telefono);
+                        pst2.setString(5, username);
+                        pst2.setString(6, pass);
+                        pst2.setString(7, permisos_string);
+                        pst2.setString(8, "Activo");
+                        pst2.setString(9, user);
+                        
+                        pst2.executeUpdate();
+                        cn2.close();
+                        
+                        Limpiar();
+                        
+                        txt_email.setBackground(Color.green);
+                        txt_nombre.setBackground(Color.green);
+                        txt_password.setBackground(Color.green);
+                        txt_telefono.setBackground(Color.green);
+                        txt_username.setBackground(Color.green);
+                        
+                        JOptionPane.showMessageDialog(null, "Registro Exitoso");
+                        //hace que la ventana JFrame sea destruida y limpiada por el sistema operativo
+                        this.dispose();
+                        
+                    } catch (HeadlessException | SQLException e) {
+                        System.err.println("Error en registar usuario "+e);
+                        JOptionPane.showMessageDialog(null, "Contacte con el administrador");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Debes ingresar todos los datos");
+                    
+                }
             }
         } catch (HeadlessException | SQLException e) {
             System.err.println("Error en validar nombre de usuario "+e);
@@ -284,4 +322,14 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
     private javax.swing.JTextField txt_telefono;
     private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
+
+    public void Limpiar(){
+        txt_email.setText("");
+        txt_nombre.setText("");
+        txt_password.setText("");
+        txt_telefono.setText("");
+        txt_username.setText("");
+        
+        cmb_niveles.setSelectedIndex(0);
+    }
 }
