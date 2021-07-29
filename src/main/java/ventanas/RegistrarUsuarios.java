@@ -1,11 +1,14 @@
 
 package ventanas;
 import clases.Conexion;
+import java.awt.Color;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.*;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
         
 
@@ -147,6 +150,11 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
         getContentPane().add(cmb_niveles, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, -1, -1));
 
         jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\ROMULO\\Documents\\NetBeansProjects\\DataSistemas\\src\\main\\java\\images\\add.png")); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 170, 120, 100));
 
         jLabel_footer.setText("Creado por Cerati Gilmour ©");
@@ -163,6 +171,65 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
     private void cmb_nivelesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_nivelesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmb_nivelesActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        int permisos_cmb, validacion=0;
+        String nombre, email, telefono, username,pass,permisos_string;
+        
+        email=txt_email.getText().trim();
+        username=txt_username.getText().trim();
+        pass=txt_password.getText().trim();
+        nombre= txt_nombre.getText().trim();
+        telefono=txt_telefono.getText().trim();
+        permisos_cmb=cmb_niveles.getSelectedIndex()+1;
+        
+        if (email.equals("")) {
+            txt_email.setBackground(Color.red);
+            validacion++;
+        }
+        if (username.equals("")) {
+            txt_username.setBackground(Color.red);
+            validacion++;
+        }
+        if (pass.equals("")) {
+            txt_password.setBackground(Color.red);
+            validacion++;
+        }
+        if (nombre.equals("")) {
+            txt_nombre.setBackground(Color.red);
+            validacion++;
+        }
+        if (telefono.equals("")) {
+            txt_telefono.setBackground(Color.red);
+            validacion++;
+        }
+        if (permisos_cmb==1) {
+            permisos_string="Administrador";
+            
+        }else if(permisos_cmb==2){
+            permisos_string="Capturista";
+        }else if(permisos_cmb==3){
+            permisos_string="Tecnico";
+        }
+        
+        try {
+            Connection cn= Conexion.conectar();
+            PreparedStatement pst= cn.prepareStatement("select username from usuarios where username= '" +username+"'");
+            ResultSet rs= pst.executeQuery();
+            
+            if (rs.next()) {
+               txt_username.setBackground(Color.red);
+                JOptionPane.showMessageDialog(null, "Nombre de usuario se encuentra registrado");
+                cn.close();
+            }else{
+                
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.err.println("Error en validar nombre de usuario "+e);
+            JOptionPane.showMessageDialog(null, "Error base de datos contacte con el administrador");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
