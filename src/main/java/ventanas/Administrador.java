@@ -106,6 +106,11 @@ public class Administrador extends javax.swing.JFrame {
         getContentPane().add(jButton_RegistrarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 120, 100));
 
         jButton_GestionarUsuarios.setIcon(new javax.swing.ImageIcon("C:\\Users\\ROMULO\\Documents\\NetBeansProjects\\DataSistemas\\src\\main\\java\\images\\informationuser.png")); // NOI18N
+        jButton_GestionarUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_GestionarUsuariosActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_GestionarUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 120, 100));
 
         jButton_Creatividad.setIcon(new javax.swing.ImageIcon("C:\\Users\\ROMULO\\Documents\\NetBeansProjects\\DataSistemas\\src\\main\\java\\images\\creatividad.png")); // NOI18N
@@ -156,6 +161,11 @@ public class Administrador extends javax.swing.JFrame {
         registarUsuarios.setVisible(true);
         
     }//GEN-LAST:event_jButton_RegistrarUsuarioActionPerformed
+
+    private void jButton_GestionarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GestionarUsuariosActionPerformed
+        GestionarUsuarios gestion=new GestionarUsuarios();
+        gestion.setVisible(true);
+    }//GEN-LAST:event_jButton_GestionarUsuariosActionPerformed
 
     /**
      * @param args the command line arguments
