@@ -57,9 +57,11 @@ public class Administrador extends javax.swing.JFrame {
             System.err.println("Error en conexión desde la interfaz Administrador");
         }
         
+        
         Toolkit miPantalla = Toolkit.getDefaultToolkit();
         Image miIcono = miPantalla.getImage("src/main/java/images/icon.png");
         setIconImage(miIcono);
+        
     }
     
     

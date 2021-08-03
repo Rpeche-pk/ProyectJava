@@ -23,10 +23,10 @@ import javax.swing.table.DefaultTableModel;
  * @author ROMULO
  */
 public class GestionarUsuarios extends javax.swing.JFrame {
-
+    
     String usuario;
     public static String user_update = "";
-
+    
     public GestionarUsuarios() {
         initComponents();
         usuario = Login.user;
@@ -35,22 +35,22 @@ public class GestionarUsuarios extends javax.swing.JFrame {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
-
+            
         };
-
+        
         setTitle("Gestion de Usuarios - Sesion de " + usuario);
         setSize(630, 330);
         setResizable(false);
         setLocationRelativeTo(null);
-
+        
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
+        
         ImageIcon wallpaper = new ImageIcon("src/main/java/images/wallpaperPrincipal.jpg");
         Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(jLabel_Wallpaper.getWidth(),
                 jLabel_Wallpaper.getHeight(), Image.SCALE_DEFAULT));
         jLabel_Wallpaper.setIcon(icono);
         this.repaint();
-
+        
         Toolkit miPantalla = Toolkit.getDefaultToolkit();
         Image icon = miPantalla.getImage("src/main/java/images/icon.png");
         setIconImage(icon);
@@ -60,17 +60,17 @@ public class GestionarUsuarios extends javax.swing.JFrame {
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement("select id_usuario, nombre_usuario,username,tipo_nivel,estatus from usuarios");
             ResultSet rs = pst.executeQuery();
-
+            
             jTable_usuarios = new JTable(model);
             //genera un scroll en la tabla
             jScrollPane1.setViewportView(jTable_usuarios);
-
+            
             model.addColumn(" ");
             model.addColumn("Nombre");
             model.addColumn("Username");
             model.addColumn("Permisos");
             model.addColumn("Estatus");
-
+            
             while (rs.next()) {
                 Object[] fila = new Object[5];
                 for (int i = 0; i < 5; i++) {
@@ -79,12 +79,29 @@ public class GestionarUsuarios extends javax.swing.JFrame {
                 model.addRow(fila);
             }
             cn.close();
-
+            
         } catch (SQLException e) {
-            System.err.println("Error al llenar tabla "+e);
+            System.err.println("Error al llenar tabla " + e);
             JOptionPane.showMessageDialog(null, "Error al mostrar informacion: Contacte con el administrador");
         }
 
+        //Evento cuando haces click a la fila
+        jTable_usuarios.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                int fila_point= jTable_usuarios.rowAtPoint(e.getPoint());
+                int columna_point=2;
+                
+                if (fila_point >=0) {
+                    user_update=(String)model.getValueAt(fila_point, columna_point);
+                    InformacionUsuario informacion_usuario= new InformacionUsuario();
+                    informacion_usuario.setVisible(true);
+                }
+            }
+        
+        });
+        
+        
     }
 
     /**
