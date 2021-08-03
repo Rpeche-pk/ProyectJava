@@ -2,6 +2,7 @@
 package ventanas;
 import java.sql.*;
 import clases.Conexion;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.Icon;
@@ -203,6 +204,91 @@ public class InformacionUsuario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ActualizarActionPerformed
+        
+        int permisos_cmb, estatus_cmb, validacion=0;
+        String nombre, email, telefono, username,pass,permisos_String="",estatus_string="";
+        
+        email=txt_email.getText().trim();
+        username=txt_username.getText().trim();
+        nombre=txt_nombre.getText().trim();
+        telefono=txt_telefono.getText().trim();
+        permisos_cmb=cmb_niveles.getSelectedIndex()+1;
+        estatus_cmb=cmb_estatus.getSelectedIndex()+1;
+        
+        if (email.equals("")) {
+            txt_email.setBackground(Color.red);
+            validacion++;
+        }
+        if (username.equals("")) {
+            txt_username.setBackground(Color.red);
+            validacion++;
+        }
+        if (nombre.equals("")) {
+            txt_nombre.setBackground(Color.red);
+            validacion++;
+        }
+        if (telefono.equals("")) {
+            txt_telefono.setBackground(Color.red);
+            validacion++;
+        }
+       
+        if (validacion==0) {
+            //los campos estan llenos
+            if (permisos_cmb==1) {
+                permisos_String="Administrador";
+            }else if(permisos_cmb==2){
+                permisos_String="Capturista";
+            }else if(permisos_cmb==3){
+                permisos_String="Tecnico";
+            }
+            
+            if (estatus_cmb==1) {
+                estatus_string="Activo";
+            }else if(estatus_cmb==2){
+                estatus_string="Inactivo";
+            }
+            
+            try {
+                Connection cn=Conexion.conectar();
+                PreparedStatement pst= cn.prepareStatement("select username from usuarios where username='" + username+"' and not id_usuario='" + id+"'");
+                
+                ResultSet rs= pst.executeQuery();
+                
+                if (rs.next()) {
+                    txt_username.setBackground(Color.red);
+                    JOptionPane.showMessageDialog(null, "Usuario registado, ingrese otro");
+                    cn.close();
+                }else{
+                    try {
+                        Connection cn2= Conexion.conectar();
+                        PreparedStatement pst2= cn2.prepareStatement("update usuarios set nombre_usuario=?, email=?, telefono=?,username=?,tipo_nivel=?, estatus=?"
+                                + "where id_usuario='"+id+"'");
+                        
+                        pst2.setString(1, nombre);
+                        pst2.setString(2, email);
+                        pst2.setString(3, telefono);
+                        pst2.setString(4, username);
+                        pst2.setString(5, permisos_String);
+                        pst2.setString(6, estatus_string);
+                        
+                        pst2.executeUpdate();
+                        cn2.close();
+                        
+                        txt_email.setBackground(Color.green);
+                        txt_nombre.setBackground(Color.green);
+                        txt_telefono.setBackground(Color.green);
+                        txt_username.setBackground(Color.green);
+                        
+                        JOptionPane.showMessageDialog(null,"Actualizacion exitosa");
+                    } catch (Exception e) {
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al actualizar "+e);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+        }
         
     }//GEN-LAST:event_jButton_ActualizarActionPerformed
 
