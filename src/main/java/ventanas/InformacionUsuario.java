@@ -194,6 +194,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jButton_RestaurarPassword.setForeground(new java.awt.Color(255, 255, 255));
         jButton_RestaurarPassword.setText("Restart Password");
         jButton_RestaurarPassword.setBorder(null);
+        jButton_RestaurarPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_RestaurarPasswordActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_RestaurarPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 300, 160, 35));
 
         jLabel2.setText("Creado por Gustavo Gilmour ©");
@@ -291,6 +296,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton_ActualizarActionPerformed
+
+    private void jButton_RestaurarPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RestaurarPasswordActionPerformed
+        RestaurarPassword restaurar = new RestaurarPassword();
+        restaurar.setVisible(true);
+    }//GEN-LAST:event_jButton_RestaurarPasswordActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
