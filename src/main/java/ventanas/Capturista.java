@@ -96,9 +96,19 @@ public class Capturista extends javax.swing.JFrame {
         getContentPane().add(jLabel_nombreUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         jButton_RegistrarCliente.setIcon(new javax.swing.ImageIcon("C:\\Users\\ROMULO\\Documents\\NetBeansProjects\\DataSistemas\\src\\main\\java\\images\\add.png")); // NOI18N
+        jButton_RegistrarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_RegistrarClienteActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_RegistrarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 120, 100));
 
         jButton_GestionarUsuario.setIcon(new javax.swing.ImageIcon("C:\\Users\\ROMULO\\Documents\\NetBeansProjects\\DataSistemas\\src\\main\\java\\images\\informationuser.png")); // NOI18N
+        jButton_GestionarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_GestionarUsuarioActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_GestionarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, 120, 100));
 
         jButton_Imprimir.setIcon(new javax.swing.ImageIcon("C:\\Users\\ROMULO\\Documents\\NetBeansProjects\\DataSistemas\\src\\main\\java\\images\\impresora.png")); // NOI18N
@@ -122,6 +132,16 @@ public class Capturista extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton_RegistrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RegistrarClienteActionPerformed
+        RegistrarClientes registrarCliente= new RegistrarClientes();
+        registrarCliente.setVisible(true);
+    }//GEN-LAST:event_jButton_RegistrarClienteActionPerformed
+
+    private void jButton_GestionarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GestionarUsuarioActionPerformed
+        GestionarCliente gestionarCliente= new GestionarCliente();
+        gestionarCliente.setVisible(true);
+    }//GEN-LAST:event_jButton_GestionarUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
